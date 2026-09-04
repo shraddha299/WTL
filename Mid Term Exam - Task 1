@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Management System</title>
+</head>
+<body>
+
+    <header>
+        <h1>Mentor Management System</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Add Mentor Form</h2>
+
+            <form action="#" method="post" enctype="multipart/form-data">
+                <div>
+                    <label for="mentor-name">Mentor Name</label>
+                    <input type="text" id="mentor-name" name="mentor-name" required>
+                </div>
+
+                <div>
+                    <label for="employee-id">Employee ID</label>
+                    <input type="text" id="employee-id" name="employee-id" required>
+                </div>
+
+                <div>
+                    <label for="department">Department</label>
+                    <input type="text" id="department" name="department" required>
+                </div>
+
+                <div>
+                    <label for="max-mentees">Max Mentees</label>
+                    <input type="number" id="max-mentees" name="max-mentees" min="1" required>
+                </div>
+
+                <div>
+                    <label for="photo">Photo</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                </div>
+
+                <button type="submit">Add Mentor</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Mentor List</h2>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Department</th>
+                        <th>Max Mentees</th>
+                        <th>Photo</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Dr. Anjali Sharma</td>
+                        <td>EMP001</td>
+                        <td>Computer Engineering</td>
+                        <td>10</td>
+                        <td>mentor1.jpg</td>
+                        <td>
+                            <button type="button">Edit</button>
+                            <button type="button">Delete</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Prof. Rahul Patil</td>
+                        <td>EMP002</td>
+                        <td>Information Technology</td>
+                        <td>8</td>
+                        <td>mentor2.jpg</td>
+                        <td>
+                            <button type="button">Edit</button>
+                            <button type="button">Delete</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Dr. Sneha Deshmukh</td>
+                        <td>EMP003</td>
+                        <td>Electronics</td>
+                        <td>12</td>
+                        <td>mentor3.jpg</td>
+                        <td>
+                            <button type="button">Edit</button>
+                            <button type="button">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Hidden Edit Popup Structure -->
+        <div id="edit-popup" hidden>
+            <section>
+                <h2>Edit Mentor</h2>
+
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <div>
+                        <label for="edit-mentor-name">Mentor Name</label>
+                        <input type="text" id="edit-mentor-name" name="edit-mentor-name">
+                    </div>
+
+                    <div>
+                        <label for="edit-employee-id">Employee ID</label>
+                        <input type="text" id="edit-employee-id" name="edit-employee-id">
+                    </div>
+
+                    <div>
+                        <label for="edit-department">Department</label>
+                        <input type="text" id="edit-department" name="edit-department">
+                    </div>
+
+                    <div>
+                        <label for="edit-max-mentees">Max Mentees</label>
+                        <input type="number" id="edit-max-mentees" name="edit-max-mentees" min="1">
+                    </div>
+
+                    <div>
+                        <label for="edit-photo">Photo</label>
+                        <input type="file" id="edit-photo" name="edit-photo" accept="image/*">
+                    </div>
+
+                    <button type="submit">Save Changes</button>
+                    <button type="button">Cancel</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Hidden Delete Confirmation Popup Structure -->
+        <div id="delete-popup" hidden>
+            <section>
+                <h2>Are you sure?</h2>
+
+                <button type="button">Confirm Delete</button>
+                <button type="button">Cancel</button>
+            </section>
+        </div>
+    </main>
+
+</body>
+</html> 
