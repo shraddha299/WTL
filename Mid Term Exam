@@ -1,0 +1,1133 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mentor Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        section {
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        span {
+            display: block;
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        td button:first-child {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        td button:last-child {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        td button:first-child:hover {
+            background-color: #d68910;
+        }
+
+        td button:last-child:hover {
+            background-color: #c0392b;
+        }
+
+        /* Edit and Delete Popups */
+
+        #edit-popup,
+        #delete-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #edit-popup[hidden],
+        #delete-popup[hidden] {
+            display: none;
+        }
+
+        #edit-popup section,
+        #delete-popup section {
+            width: 100%;
+            max-width: 500px;
+            margin: 0;
+            background-color: white;
+        }
+
+        #delete-popup section {
+            text-align: center;
+        }
+
+        #delete-popup h2 {
+            margin-bottom: 20px;
+        }
+
+        #confirm-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        #cancel-delete,
+        #cancel-edit {
+            background-color: #7f8c8d;
+            color: white;
+        }
+
+        #confirm-delete:hover {
+            background-color: #c0392b;
+        }
+
+        #cancel-delete:hover,
+        #cancel-edit:hover {
+            background-color: #616a6b;
+        }
+
+        @media (max-width: 700px) {
+            main {
+                width: 95%;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= TOP BAR ================= -->
+
+    <header>
+        <h1>Mentor Management System</h1>
+    </header>
+
+
+    <main>
+
+        <!-- ================= ADD MENTOR FORM ================= -->
+
+        <section>
+            <h2>Add Mentor Form</h2>
+
+            <form id="mentor-form" novalidate>
+
+                <div>
+                    <label for="mentor-name">Mentor Name</label>
+
+                    <input
+                        type="text"
+                        id="mentor-name"
+                        name="mentor-name"
+                    >
+
+                    <span id="mentor-name-error"></span>
+                </div>
+
+
+                <div>
+                    <label for="employee-id">Employee ID</label>
+
+                    <input
+                        type="text"
+                        id="employee-id"
+                        name="employee-id"
+                    >
+
+                    <span id="employee-id-error"></span>
+                </div>
+
+
+                <div>
+                    <label for="department">Department</label>
+
+                    <input
+                        type="text"
+                        id="department"
+                        name="department"
+                    >
+
+                    <span id="department-error"></span>
+                </div>
+
+
+                <div>
+                    <label for="max-mentees">
+                        Maximum Mentees Allowed
+                    </label>
+
+                    <input
+                        type="number"
+                        id="max-mentees"
+                        name="max-mentees"
+                        min="1"
+                    >
+
+                    <span id="max-mentees-error"></span>
+                </div>
+
+
+                <div>
+                    <label for="photo">Profile Photo</label>
+
+                    <input
+                        type="file"
+                        id="photo"
+                        name="photo"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    >
+
+                    <span id="photo-error"></span>
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="add-mentor"
+                    disabled
+                >
+                    Add Mentor
+                </button>
+
+            </form>
+        </section>
+
+
+        <!-- ================= MENTOR LIST ================= -->
+
+        <section>
+
+            <h2>Mentor List</h2>
+
+            <table border="1">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Department</th>
+                        <th>Max Mentees</th>
+                        <th>Photo</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="mentor-table-body">
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- ================= EDIT POPUP ================= -->
+
+        <div id="edit-popup" hidden>
+
+            <section>
+
+                <h2>Edit Mentor</h2>
+
+                <form id="edit-form" novalidate>
+
+                    <div>
+                        <label for="edit-mentor-name">
+                            Mentor Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-mentor-name"
+                        >
+
+                        <span id="edit-mentor-name-error"></span>
+                    </div>
+
+
+                    <div>
+                        <label for="edit-employee-id">
+                            Employee ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-employee-id"
+                        >
+
+                        <span id="edit-employee-id-error"></span>
+                    </div>
+
+
+                    <div>
+                        <label for="edit-department">
+                            Department
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-department"
+                        >
+
+                        <span id="edit-department-error"></span>
+                    </div>
+
+
+                    <div>
+                        <label for="edit-max-mentees">
+                            Maximum Mentees Allowed
+                        </label>
+
+                        <input
+                            type="number"
+                            id="edit-max-mentees"
+                            min="1"
+                        >
+
+                        <span id="edit-max-mentees-error"></span>
+                    </div>
+
+
+                    <div>
+                        <label for="edit-photo">
+                            Profile Photo
+                        </label>
+
+                        <input
+                            type="file"
+                            id="edit-photo"
+                            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                        >
+
+                        <span id="edit-photo-error"></span>
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        id="save-changes"
+                        disabled
+                    >
+                        Save Changes
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancel-edit"
+                    >
+                        Cancel
+                    </button>
+
+                </form>
+
+            </section>
+
+        </div>
+
+
+        <!-- ================= DELETE POPUP ================= -->
+
+        <div id="delete-popup" hidden>
+
+            <section>
+
+                <h2>Are you sure?</h2>
+
+                <button
+                    type="button"
+                    id="confirm-delete"
+                >
+                    Confirm Delete
+                </button>
+
+                <button
+                    type="button"
+                    id="cancel-delete"
+                >
+                    Cancel
+                </button>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        // In-memory array
+        let mentors = [
+
+            {
+                name: "Dr. Anjali Sharma",
+                employeeId: "EMP001",
+                department: "Computer Engineering",
+                maxMentees: 10,
+                photo: "mentor1.jpg"
+            },
+
+            {
+                name: "Prof. Rahul Patil",
+                employeeId: "EMP002",
+                department: "Information Technology",
+                maxMentees: 8,
+                photo: "mentor2.jpg"
+            },
+
+            {
+                name: "Dr. Sneha Deshmukh",
+                employeeId: "EMP003",
+                department: "Electronics",
+                maxMentees: 12,
+                photo: "mentor3.jpg"
+            }
+
+        ];
+
+
+        const mentorForm =
+            document.getElementById("mentor-form");
+
+        const tableBody =
+            document.getElementById("mentor-table-body");
+
+        const addButton =
+            document.getElementById("add-mentor");
+
+
+        const editPopup =
+            document.getElementById("edit-popup");
+
+        const editForm =
+            document.getElementById("edit-form");
+
+        const saveButton =
+            document.getElementById("save-changes");
+
+
+        const deletePopup =
+            document.getElementById("delete-popup");
+
+
+        let editIndex = -1;
+        let deleteIndex = -1;
+
+
+        // ================= PHOTO VALIDATION =================
+
+        function isValidPhoto(file) {
+
+            if (!file) {
+                return false;
+            }
+
+            return (
+                file.type === "image/jpeg" ||
+                file.type === "image/png" ||
+                /\.(jpg|jpeg|png)$/i.test(file.name)
+            );
+        }
+
+
+        // ================= ERROR MESSAGE =================
+
+        function showError(id, message) {
+
+            document.getElementById(
+                id + "-error"
+            ).textContent = message;
+        }
+
+
+        // ================= FORM VALIDATION =================
+
+        function validateForm(
+            nameId,
+            employeeIdId,
+            departmentId,
+            maxMenteesId,
+            photoId,
+            buttonId,
+            photoRequired = true
+        ) {
+
+            const name =
+                document.getElementById(nameId).value.trim();
+
+            const employeeId =
+                document.getElementById(employeeIdId).value.trim();
+
+            const department =
+                document.getElementById(departmentId).value.trim();
+
+            const maxMentees =
+                document.getElementById(maxMenteesId).value;
+
+            const photo =
+                document.getElementById(photoId).files[0];
+
+
+            let valid = true;
+
+
+            showError(nameId, "");
+            showError(employeeIdId, "");
+            showError(departmentId, "");
+            showError(maxMenteesId, "");
+            showError(photoId, "");
+
+
+            // Mentor Name
+            if (name === "") {
+
+                showError(
+                    nameId,
+                    "Mentor Name is required."
+                );
+
+                valid = false;
+            }
+
+
+            // Employee ID
+            if (employeeId === "") {
+
+                showError(
+                    employeeIdId,
+                    "Employee ID is required."
+                );
+
+                valid = false;
+            }
+
+
+            // Department
+            if (department === "") {
+
+                showError(
+                    departmentId,
+                    "Department is required."
+                );
+
+                valid = false;
+            }
+
+
+            // Maximum Mentees
+            if (
+                !/^\d+$/.test(maxMentees) ||
+                Number(maxMentees) <= 0
+            ) {
+
+                showError(
+                    maxMenteesId,
+                    "Enter a positive whole number."
+                );
+
+                valid = false;
+            }
+
+
+            // Photo
+            if (photoRequired && !isValidPhoto(photo)) {
+
+                showError(
+                    photoId,
+                    "Select a JPG or PNG image."
+                );
+
+                valid = false;
+            }
+
+
+            document.getElementById(buttonId).disabled = !valid;
+
+            return valid;
+        }
+
+
+        // ================= ADD FORM VALIDATION =================
+
+        function validateAddForm() {
+
+            return validateForm(
+                "mentor-name",
+                "employee-id",
+                "department",
+                "max-mentees",
+                "photo",
+                "add-mentor",
+                true
+            );
+        }
+
+
+        // ================= DISPLAY TABLE =================
+
+        function displayMentors() {
+
+            tableBody.innerHTML = "";
+
+
+            mentors.forEach(function(mentor, index) {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>${mentor.name}</td>
+
+                    <td>${mentor.employeeId}</td>
+
+                    <td>${mentor.department}</td>
+
+                    <td>${mentor.maxMentees}</td>
+
+                    <td>${mentor.photo}</td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            onclick="openEdit(${index})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="openDelete(${index})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+                `;
+
+
+                tableBody.appendChild(row);
+
+            });
+        }
+
+
+        // ================= ADD MENTOR =================
+
+        mentorForm.addEventListener(
+            "input",
+            validateAddForm
+        );
+
+        mentorForm.addEventListener(
+            "change",
+            validateAddForm
+        );
+
+
+        mentorForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                if (!validateAddForm()) {
+                    return;
+                }
+
+
+                const photo =
+                    document.getElementById("photo").files[0];
+
+
+                mentors.push({
+
+                    name:
+                        document.getElementById(
+                            "mentor-name"
+                        ).value.trim(),
+
+                    employeeId:
+                        document.getElementById(
+                            "employee-id"
+                        ).value.trim(),
+
+                    department:
+                        document.getElementById(
+                            "department"
+                        ).value.trim(),
+
+                    maxMentees:
+                        Number(
+                            document.getElementById(
+                                "max-mentees"
+                            ).value
+                        ),
+
+                    photo: photo.name
+
+                });
+
+
+                displayMentors();
+
+
+                mentorForm.reset();
+
+                addButton.disabled = true;
+
+            }
+        );
+
+
+        // ================= OPEN EDIT =================
+
+        function openEdit(index) {
+
+            editIndex = index;
+
+            const mentor = mentors[index];
+
+
+            document.getElementById(
+                "edit-mentor-name"
+            ).value = mentor.name;
+
+
+            document.getElementById(
+                "edit-employee-id"
+            ).value = mentor.employeeId;
+
+
+            document.getElementById(
+                "edit-department"
+            ).value = mentor.department;
+
+
+            document.getElementById(
+                "edit-max-mentees"
+            ).value = mentor.maxMentees;
+
+
+            // Browser does not allow
+            // JavaScript to pre-fill file inputs.
+            document.getElementById(
+                "edit-photo"
+            ).value = "";
+
+
+            clearEditErrors();
+
+
+            editPopup.hidden = false;
+
+
+            // Existing photo can remain if user
+            // does not select a new one.
+            saveButton.disabled = false;
+        }
+
+
+        // ================= EDIT VALIDATION =================
+
+        function validateEditForm() {
+
+            const name =
+                document.getElementById(
+                    "edit-mentor-name"
+                ).value.trim();
+
+            const employeeId =
+                document.getElementById(
+                    "edit-employee-id"
+                ).value.trim();
+
+            const department =
+                document.getElementById(
+                    "edit-department"
+                ).value.trim();
+
+            const maxMentees =
+                document.getElementById(
+                    "edit-max-mentees"
+                ).value;
+
+            const photo =
+                document.getElementById(
+                    "edit-photo"
+                ).files[0];
+
+
+            let valid = true;
+
+
+            clearEditErrors();
+
+
+            if (name === "") {
+
+                showError(
+                    "edit-mentor-name",
+                    "Mentor Name is required."
+                );
+
+                valid = false;
+            }
+
+
+            if (employeeId === "") {
+
+                showError(
+                    "edit-employee-id",
+                    "Employee ID is required."
+                );
+
+                valid = false;
+            }
+
+
+            if (department === "") {
+
+                showError(
+                    "edit-department",
+                    "Department is required."
+                );
+
+                valid = false;
+            }
+
+
+            if (
+                !/^\d+$/.test(maxMentees) ||
+                Number(maxMentees) <= 0
+            ) {
+
+                showError(
+                    "edit-max-mentees",
+                    "Enter a positive whole number."
+                );
+
+                valid = false;
+            }
+
+
+            // If a new photo is selected,
+            // it must be JPG or PNG.
+            if (photo && !isValidPhoto(photo)) {
+
+                showError(
+                    "edit-photo",
+                    "Photo must be JPG or PNG."
+                );
+
+                valid = false;
+            }
+
+
+            saveButton.disabled = !valid;
+
+            return valid;
+        }
+
+
+        function clearEditErrors() {
+
+            showError("edit-mentor-name", "");
+            showError("edit-employee-id", "");
+            showError("edit-department", "");
+            showError("edit-max-mentees", "");
+            showError("edit-photo", "");
+
+        }
+
+
+        editForm.addEventListener(
+            "input",
+            validateEditForm
+        );
+
+        editForm.addEventListener(
+            "change",
+            validateEditForm
+        );
+
+
+        // ================= SAVE CHANGES =================
+
+        editForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                if (!validateEditForm()) {
+                    return;
+                }
+
+
+                const photo =
+                    document.getElementById(
+                        "edit-photo"
+                    ).files[0];
+
+
+                mentors[editIndex] = {
+
+                    name:
+                        document.getElementById(
+                            "edit-mentor-name"
+                        ).value.trim(),
+
+                    employeeId:
+                        document.getElementById(
+                            "edit-employee-id"
+                        ).value.trim(),
+
+                    department:
+                        document.getElementById(
+                            "edit-department"
+                        ).value.trim(),
+
+                    maxMentees:
+                        Number(
+                            document.getElementById(
+                                "edit-max-mentees"
+                            ).value
+                        ),
+
+                    photo:
+                        photo
+                            ? photo.name
+                            : mentors[editIndex].photo
+
+                };
+
+
+                displayMentors();
+
+
+                editPopup.hidden = true;
+
+                editIndex = -1;
+
+            }
+        );
+
+
+        // ================= CANCEL EDIT =================
+
+        document.getElementById(
+            "cancel-edit"
+        ).addEventListener(
+            "click",
+            function() {
+
+                editPopup.hidden = true;
+
+                editIndex = -1;
+
+            }
+        );
+
+
+        // ================= OPEN DELETE =================
+
+        function openDelete(index) {
+
+            deleteIndex = index;
+
+            deletePopup.hidden = false;
+
+        }
+
+
+        // ================= CONFIRM DELETE =================
+
+        document.getElementById(
+            "confirm-delete"
+        ).addEventListener(
+            "click",
+            function() {
+
+                if (deleteIndex !== -1) {
+
+                    mentors.splice(
+                        deleteIndex,
+                        1
+                    );
+
+                    displayMentors();
+
+                }
+
+
+                deleteIndex = -1;
+
+                deletePopup.hidden = true;
+
+            }
+        );
+
+
+        // ================= CANCEL DELETE =================
+
+        document.getElementById(
+            "cancel-delete"
+        ).addEventListener(
+            "click",
+            function() {
+
+                deleteIndex = -1;
+
+                deletePopup.hidden = true;
+
+            }
+        );
+
+
+        // ================= INITIAL TABLE =================
+
+        displayMentors();
+
+    </script>
+
+</body>
+</html>
+```
