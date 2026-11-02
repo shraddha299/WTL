@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentor Management System</title>
+</head>
+<body>
+<header><h1>Mentor Management System</h1></header>
+<main>
+<section>
+  <h2>Add Mentor Form</h2>
+  <form id="mentorForm" novalidate>
+    <div><label for="name">Mentor Name</label><input id="name" type="text"><span id="nameError"></span></div>
+    <div><label for="employeeId">Employee ID</label><input id="employeeId" type="text"><span id="employeeIdError"></span></div>
+    <div><label for="department">Department</label><input id="department" type="text"><span id="departmentError"></span></div>
+    <div><label for="maxMentees">Maximum Mentees Allowed</label><input id="maxMentees" type="number" min="1"><span id="maxMenteesError"></span></div>
+    <div><label for="photo">Profile Photo</label><input id="photo" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png"><span id="photoError"></span></div>
+    <button id="addButton" type="submit" disabled>Add Mentor</button>
+  </form>
+</section>
+<section>
+  <h2>Mentor List</h2>
+  <table border="1">
+    <thead><tr><th>Name</th><th>Employee ID</th><th>Department</th><th>Max Mentees</th><th>Photo</th><th>Actions</th></tr></thead>
+    <tbody id="mentorTable"></tbody>
+  </table>
+</section>
+<div id="editPopup" hidden>
+  <section><h2>Edit Mentor</h2>
+    <form id="editForm" novalidate>
+      <div><label for="editName">Mentor Name</label><input id="editName" type="text"><span id="editNameError"></span></div>
+      <div><label for="editEmployeeId">Employee ID</label><input id="editEmployeeId" type="text"><span id="editEmployeeIdError"></span></div>
+      <div><label for="editDepartment">Department</label><input id="editDepartment" type="text"><span id="editDepartmentError"></span></div>
+      <div><label for="editMaxMentees">Maximum Mentees Allowed</label><input id="editMaxMentees" type="number" min="1"><span id="editMaxMenteesError"></span></div>
+      <div><label for="editPhoto">Profile Photo</label><input id="editPhoto" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png"><span id="editPhotoError"></span></div>
+      <button id="saveButton" type="submit" disabled>Save Changes</button>
+      <button id="cancelEdit" type="button">Cancel</button>
+    </form>
+  </section>
+</div>
+<div id="deletePopup" hidden>
+  <section><h2>Are you sure?</h2><button id="confirmDelete" type="button">Confirm Delete</button><button id="cancelDelete" type="button">Cancel</button></section>
+</div>
+</main>
+<script>
+let mentors=[
+ {name:'Dr. Anjali Sharma',employeeId:'EMP001',department:'Computer Engineering',maxMentees:10,photo:'mentor1.jpg'},
+ {name:'Prof. Rahul Patil',employeeId:'EMP002',department:'Information Technology',maxMentees:8,photo:'mentor2.jpg'},
+ {name:'Dr. Sneha Deshmukh',employeeId:'EMP003',department:'Electronics',maxMentees:12,photo:'mentor3.jpg'}
+];
+let editIndex=-1,deleteIndex=-1;
+const $=id=>document.getElementById(id);
+function error(id,msg){$(id+'Error').textContent=msg;}
+function validPhoto(file){return file && (/\.(jpg|jpeg|png)$/i.test(file.name)) && (file.type==='image/jpeg'||file.type==='image/png');}
+function validate(nameId,empId,deptId,maxId,photoId,buttonId,allowExistingPhoto=false){
+ let ok=true;
+ [nameId,empId,deptId,maxId,photoId].forEach(id=>error(id,''));
+ if(!$(nameId).value.trim()){error(nameId,' Required.');ok=false;}
+ if(!$(empId).value.trim()){error(empId,' Required.');ok=false;}
+ if(!$(deptId).value.trim()){error(deptId,' Required.');ok=false;}
+ if(!/^\d+$/.test($(maxId).value)||Number($(maxId).value)<=0){error(maxId,' Enter a positive whole number.');ok=false;}
+ const file=$(photoId).files[0];
+ if(!file && !allowExistingPhoto){error(photoId,' Select a JPG or PNG image.');ok=false;}
+ else if(file&&!validPhoto(file)){error(photoId,' Select a JPG or PNG image.');ok=false;}
+ $(buttonId).disabled=!ok; return ok;
+}
+function validateAdd(){return validate('name','employeeId','department','maxMentees','photo','addButton');}
+function validateEdit(){return validate('editName','editEmployeeId','editDepartment','editMaxMentees','editPhoto','saveButton',true);}
+function render(){
+ $('mentorTable').innerHTML='';
+ mentors.forEach((m,i)=>{
+  const tr=document.createElement('tr');
+  [m.name,m.employeeId,m.department,m.maxMentees,m.photo].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td);});
+  const td=document.createElement('td');
+  const edit=document.createElement('button');edit.type='button';edit.textContent='Edit';edit.onclick=()=>openEdit(i);
+  const del=document.createElement('button');del.type='button';del.textContent='Delete';del.onclick=()=>openDelete(i);
+  td.append(edit,del);tr.appendChild(td);$('mentorTable').appendChild(tr);
+ });
+}
+$('mentorForm').addEventListener('input',validateAdd);$('mentorForm').addEventListener('change',validateAdd);
+$('mentorForm').addEventListener('submit',e=>{e.preventDefault();if(!validateAdd())return;const f=$('photo').files[0];mentors.push({name:$('name').value.trim(),employeeId:$('employeeId').value.trim(),department:$('department').value.trim(),maxMentees:Number($('maxMentees').value),photo:f.name});render();e.target.reset();$('addButton').disabled=true;});
+function openEdit(i){editIndex=i;const m=mentors[i];$('editName').value=m.name;$('editEmployeeId').value=m.employeeId;$('editDepartment').value=m.department;$('editMaxMentees').value=m.maxMentees;$('editPhoto').value='';['editName','editEmployeeId','editDepartment','editMaxMentees','editPhoto'].forEach(id=>error(id,''));$('saveButton').disabled=false;$('editPopup').hidden=false;}
+$('editForm').addEventListener('input',validateEdit);$('editForm').addEventListener('change',validateEdit);
+$('editForm').addEventListener('submit',e=>{e.preventDefault();if(!validateEdit())return;const f=$('editPhoto').files[0];const old=mentors[editIndex];mentors[editIndex]={name:$('editName').value.trim(),employeeId:$('editEmployeeId').value.trim(),department:$('editDepartment').value.trim(),maxMentees:Number($('editMaxMentees').value),photo:f?f.name:old.photo};render();$('editPopup').hidden=true;});
+$('cancelEdit').onclick=()=>{$('editPopup').hidden=true;};
+function openDelete(i){deleteIndex=i;$('deletePopup').hidden=false;}
+$('confirmDelete').onclick=()=>{if(deleteIndex>=0)mentors.splice(deleteIndex,1);deleteIndex=-1;$('deletePopup').hidden=true;render();};
+$('cancelDelete').onclick=()=>{deleteIndex=-1;$('deletePopup').hidden=true;};
+render();
+</script>
+</body>
+</html>

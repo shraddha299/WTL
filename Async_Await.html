@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Fact Generator</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#002939;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .container{
+            width:500px;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px gray;
+            text-align:center;
+        }
+
+        h2{
+            color:#333;
+        }
+
+        #fact{
+            margin:20px 0;
+            font-size:18px;
+            color:#444;
+            min-height:80px;
+        }
+
+        button{
+            padding:10px 20px;
+            background:#004e03;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#388E3C;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🌍 Random Amazing Fact</h2>
+
+<p id="fact">Click the button to get a random fact.</p>
+
+<button onclick="getFact()">Show Fact</button>
+
+</div>
+
+<script>
+
+async function getFact()
+{
+    try{
+
+        const res = await fetch("https://uselessfacts.jsph.pl/api/v2/facts/random");
+        const data = await res.json();
+
+        document.getElementById("fact").innerHTML = data.text;
+
+    }
+
+    catch(err)
+    {
+        document.getElementById("fact").innerHTML = "Unable to load fact.";
+        console.error("Error:", err);
+    }
+}
+
+</script>
+
+</body>
+</html>
